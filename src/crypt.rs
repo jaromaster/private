@@ -40,7 +40,7 @@ pub mod crypt {
     }
 
     /// decrypt data and return it
-    fn decrypt(key: &str, data: &Vec<u8>) -> Vec<u8>{
+    fn decrypt(key: &str, data: &Vec<u8>) -> Vec<u8> {
         let prepared_key = prepare_key(key);
         let f = fernet::Fernet::new(&prepared_key).unwrap();
         let decrypted_data = f.decrypt(&String::from_utf8(data.to_vec()).unwrap()).expect("could not decrypt data");

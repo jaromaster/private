@@ -31,5 +31,4 @@ pub mod parse {
 
         return Ok((action, targets));
     }
-
 }

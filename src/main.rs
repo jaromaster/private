@@ -1,4 +1,4 @@
-use crypt::crypt::{action_on_file};
+use crypt::crypt::action_on_file;
 
 use crate::parse::parse::parse_args;
 
@@ -7,7 +7,6 @@ pub mod parse;
 pub mod constants;
 
 fn main() {
-
     // SYNTAX: private ACTION TARGET1 TARGET2 ...
     let args_result = parse_args(std::env::args());
     if args_result.is_err() {
