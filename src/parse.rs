@@ -13,7 +13,7 @@ pub mod parse {
 
         let args_vec: Vec<String> = args.collect();
 
-        // check action ["encrypt", "decrypt"]
+        // check action
         let action_string = &args_vec[1];
         let action;
         if action_string == "encrypt" {
@@ -21,6 +21,9 @@ pub mod parse {
         }
         else if action_string == "decrypt" {
             action = Actions::DECRYPT;
+        }
+        else if action_string == "hash" {
+            action = Actions::HASH;
         }
         else {
             return Err(Error::new(ErrorKind::InvalidInput, "invalid action"));

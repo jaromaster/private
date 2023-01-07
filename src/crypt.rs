@@ -1,6 +1,9 @@
 pub mod crypt {
     use std::io::{ErrorKind, Error};
 
+    use hex_string::HexString;
+    use sha3::{Sha3_256, Digest};
+
     use crate::constants::constants::Actions;
 
 
@@ -17,7 +20,12 @@ pub mod crypt {
         let result_data;
         match action {
             Actions::ENCRYPT => result_data = encrypt(key, &data),
-            Actions::DECRYPT => result_data = decrypt(key, &data)
+            Actions::DECRYPT => result_data = decrypt(key, &data),
+            Actions::HASH => {
+                result_data = hash_sha3(&data);
+                println!("{}: {}",  path, vec_to_hex_string(&result_data));
+                return None;
+            }
         };
 
         // write to file
@@ -46,6 +54,19 @@ pub mod crypt {
         let decrypted_data = f.decrypt(&String::from_utf8(data.to_vec()).unwrap()).expect("could not decrypt data");
 
         return decrypted_data;
+    }
+
+    /// hash data using sha3 algorithm
+    fn hash_sha3(data: &Vec<u8>) -> Vec<u8> {
+        let mut sha3_hasher = Sha3_256::new();
+        sha3_hasher.update(data);
+
+        return sha3_hasher.finalize().to_vec();
+    }
+
+    /// convert byte vector to hex string
+    fn vec_to_hex_string(data: &Vec<u8>) -> String {
+        return HexString::from_bytes(data).as_string();
     }
 
     /// fill key until size 32 reached and encode as base64

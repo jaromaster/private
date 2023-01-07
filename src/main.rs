@@ -16,7 +16,13 @@ fn main() {
     }
 
     let (action, targets) = args_result.unwrap();
-    let key = rpassword::prompt_password("Enter password: ").unwrap();
+    let key;
+
+    // do not get password if hashing
+    match action {
+        Actions::ENCRYPT | Actions::DECRYPT => key = get_passwd(),
+        Actions::HASH => key = String::new()
+    }
 
     // execute action on targets (e.g. encrypt or decrypt)
     for target in targets {
@@ -25,12 +31,15 @@ fn main() {
             handle_file(&action, &target, &key);
         }
         else {
-            println!("encountered dir: {}", target);
             handle_dir(&action, &target, &key);
         }
     }
 }
 
+/// get password from user input
+fn get_passwd() -> String {
+    rpassword::prompt_password("Enter password: ").unwrap()
+}
 
 /// execute action, on files only
 fn handle_file(action: &Actions, file_path: &str, key: &str) {
