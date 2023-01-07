@@ -1,17 +1,19 @@
 use constants::constants::{Actions, PROMPT_PASSWD_MSG};
 use crypt::crypt::action_on_file;
 
-use crate::parse::parse::parse_args;
+use crate::{parse::parse::parse_args, help::help::help};
 
 pub mod crypt;
 pub mod parse;
 pub mod constants;
+pub mod help;
 
 fn main() {
-    // SYNTAX: private ACTION TARGET1 TARGET2 ...
+    
     let args_result = parse_args(std::env::args());
     if args_result.is_err() {
         eprintln!("{}", args_result.err().unwrap());
+        help();
         std::process::exit(1);
     }
 
