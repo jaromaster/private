@@ -1,4 +1,4 @@
-use constants::constants::Actions;
+use constants::constants::{Actions, PROMPT_PASSWD_MSG};
 use crypt::crypt::action_on_file;
 
 use crate::parse::parse::parse_args;
@@ -38,7 +38,7 @@ fn main() {
 
 /// get password from user input
 fn get_passwd() -> String {
-    rpassword::prompt_password("Enter password: ").unwrap()
+    rpassword::prompt_password(PROMPT_PASSWD_MSG).unwrap()
 }
 
 /// execute action, on files only

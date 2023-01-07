@@ -4,7 +4,7 @@ pub mod crypt {
     use hex_string::HexString;
     use sha3::{Sha3_256, Digest};
 
-    use crate::constants::constants::Actions;
+    use crate::constants::constants::*;
 
 
     /// execute given action on file (encrypt, decrypt)
@@ -12,7 +12,7 @@ pub mod crypt {
         // read file
         let data_result = std::fs::read(path);
         if data_result.is_err() {
-            return Some(Error::new(ErrorKind::InvalidInput, format!("could not read file '{}'", path)));
+            return Some(Error::new(ErrorKind::InvalidInput, format!("{} '{}'", FILE_READ_ERR_MSG, path)));
         }
         let data = data_result.unwrap();
 
@@ -31,7 +31,7 @@ pub mod crypt {
         // write to file
         let write_result = std::fs::write(path, result_data);
         if write_result.is_err() {
-            return Some(Error::new(ErrorKind::InvalidInput, format!("could not write to file '{}'", path)));
+            return Some(Error::new(ErrorKind::InvalidInput, format!("{} '{}'", FILE_WRITE_ERR_MSG, path)));
         }
 
         return None;
@@ -51,7 +51,7 @@ pub mod crypt {
     fn decrypt(key: &str, data: &Vec<u8>) -> Vec<u8> {
         let prepared_key = prepare_key(key);
         let f = fernet::Fernet::new(&prepared_key).unwrap();
-        let decrypted_data = f.decrypt(&String::from_utf8(data.to_vec()).unwrap()).expect("could not decrypt data");
+        let decrypted_data = f.decrypt(&String::from_utf8(data.to_vec()).unwrap()).expect(DECRYPT_ERR_MSG);
 
         return decrypted_data;
     }
